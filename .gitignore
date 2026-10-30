@@ -218,3 +218,31 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local
+
+.bkp/
+.doc/
+.new/
+.old/
+__pycache__/
+.pytest_cache/
+.venv/
+
+*~
+*.bak
+*.err
+*.log
+*.npy
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+aircraft.db
+
+# intermediários por execução
+data/temp/
+
+config.toml
+tools/cache/

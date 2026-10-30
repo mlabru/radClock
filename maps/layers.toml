@@ -1,0 +1,34 @@
+# make_map.py --geojson-dir: centro -23.2100,-45.8700 raio 300 km; fontes: ne_10m_coastline.geojson, ne_10m_admin_0_boundary_lines_land.geojson, ne_10m_admin_1_states_provinces_lines.geojson, ne_10m_rivers_lake_centerlines.geojson, OurAirports (domínio público)
+
+[[map.layers]]
+path = "maps/rivers.geojson"
+color = "#2E4A66"
+
+[[map.layers]]
+path = "maps/coastline.geojson"
+color = "#D8C878"
+
+[[map.layers]]
+path = "maps/states.geojson"
+color = "#6E6640"
+
+[[map.layers]]
+path = "maps/centerlines.geojson"
+color = "#4A5A50"
+max_range_km = 50
+
+[[map.layers]]
+path = "maps/runways.geojson"
+color = "#C8C8C8"
+max_range_km = 100
+
+[[map.layers]]
+path = "maps/airports.geojson"
+color = "#C8C8C8"
+label_range_km = 100
+
+[[map.layers]]
+path = "maps/navaids.geojson"
+color = "#8FA0C8"
+max_range_km = 200
+label_range_km = 100

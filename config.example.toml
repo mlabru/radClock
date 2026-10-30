@@ -1,0 +1,126 @@
+# Copie para config.toml (desenvolvimento) ou /etc/radClock/config.toml (Pi).
+# Toda chave é opcional; os valores abaixo são os padrões.
+
+[station]
+name = "radClock"    # título da janela e do log
+lat = -23.2100
+lon = -45.8700
+
+[display]
+width = 800          # Touch Display v1 = 800x480; Touch Display 2 em paisagem = 1280x720
+height = 480
+fullscreen = true
+fps = 15
+# brilho escolhido na tela AJUSTES (linha BRILHO): "auto" = primeiro dispositivo em
+# /sys/class/backlight (a tela DSI); "" = não mexer no brilho; ou a pasta do dispositivo.
+# O usuário do serviço precisa estar no grupo video. Ao sair, o brilho original volta.
+backlight = "auto"
+
+[radar]
+ranges_km = [10, 25, 50, 100, 200, 300]
+range_km = 50
+stale_s = 15         # posição mais velha que isso: cinza
+drop_s = 60          # mais velha que isso: some
+# padrões dos ajustes de exibição; a tela AJUSTES muda cada um e vale por cima
+symbol = "square"    # símbolo do alvo: "square" (quadrado) ou "plane" (avião girado no rumo)
+vector_min = 2.0     # vetor de velocidade = posição daqui a N minutos (0 desliga)
+sweep = true         # feixe de varredura ligado (sweep_s = 0 tira o feixe e o ajuste)
+alert = "sound"      # alerta de conflito: "sound" (cor + som), "color" (só cor) ou "off"
+zones = true         # mostra os círculos das zonas de inibição
+show_ground = false
+sweep_s = 4          # uma volta do feixe de varredura em N segundos (0 desliga)
+trail_s = 60         # rastro: posições dos últimos N segundos (0 desliga; a tela oferece 0/60/120)
+conflict_s = 120     # alerta de conflito: prevê N segundos à frente (0 desliga)
+conflict_km = 5.6    # separação mínima horizontal (3 NM)...
+conflict_ft = 1000   # ...e vertical; o alerta exige perder as duas ao mesmo tempo
+extrapolate_s = 10   # entre atualizações o alvo anda pela velocidade, até N s (0 desliga)
+conflict_sound = ""  # wav/ogg do alerta de conflito; "" = bipe bitonal gerado
+conflict_volume = 0.6   # 0 = alerta só visual; toca uma vez por par novo, só no modo ATC
+
+# Zonas de inibição do alerta de conflito: círculos em volta de aeródromos, até
+# um teto. O par é ignorado só se as DUAS aeronaves estão dentro de alguma zona
+# e abaixo do teto. O teto é altitude do ADS-B (pressão), não altura sobre a
+# pista: some a elevação do aeródromo. Desenhadas no escopo no modo ATC.
+# [[radar.inhibit]]
+# name = "SBSJ"
+# lat = -23.2289
+# lon = -45.8711
+# radius_km = 9
+# ceiling_ft = 4500  # elevação ~2100 ft + ~2400 ft de circuito
+
+[source]
+kind = "api"         # "api" = API pública, ver [api] | "readsb" = receptor local (RTL-SDR)
+                     # | "opensky" = OpenSky Network, ver [opensky]
+path = "/run/readsb/aircraft.json"
+# url = "http://192.168.0.50/tar1090/data/aircraft.json"   # readsb em outra máquina
+interval_s = 1.0
+max_age_s = 10       # 0 desliga a checagem de receptor parado
+
+[api]                # fonte principal com kind = "api", ou reserva com fallback = true
+provider = "adsb.fi"    # "adsb.fi" | "adsb.lol" | "custom"
+# url = "https://minha.api/v2/point/{lat:.4f}/{lon:.4f}/{radius_nm:.0f}"  # só com "custom"
+interval_s = 5.0     # mínimo 1 s; 429 ou falhas seguidas ativam espera de 30 s a 10 min
+fallback = false     # com kind = "readsb": usa a API quando o receptor falhar
+
+[opensky]            # OpenSky Network: conta gratuita, OAuth2 (Account -> API Client)
+# credentials = "/etc/radClock/opensky.json"   # credentials.json baixado da conta, ou:
+# client_id = "..."
+# client_secret = "..."
+interval_s = 30      # 1 crédito por consulta: 2880/dia, a cota comum é 4000
+radius_km = 250      # caixa em volta da estação; 250 km = 1 crédito no Brasil
+daily_credits = 4000 # 8000 se você alimenta o OpenSky; só para o aviso no log
+fallback = "adsb.lol"   # API gratuita enquanto o OpenSky falha ("" = nenhuma)
+
+[echo]               # ecos de chuva da RainViewer (precisa de internet)
+enabled = false
+opacity = 0.6
+refresh_s = 300      # um quadro novo sai a cada 10 min
+frames = 1           # 1 = só o quadro atual; >1 = animação dos últimos N (10 min cada, máx 13)
+frame_s = 0.5        # com animação: segundos por quadro
+hold_s = 2           # com animação: pausa no quadro mais novo
+color_scheme = 2     # a API gratuita só oferece o 2 desde 2026
+
+[weather]            # clima no canto do escopo (sem chave)
+enabled = true       # sem internet só aparece um aviso no log
+icao = ""            # METAR do aeródromo (ex.: "SBSJ", pela NOAA AWC); "" = modelo do Open-Meteo
+refresh_s = 900      # METAR sai de hora em hora; o Open-Meteo muda a cada 15 min (mínimo 300)
+max_age_s = 3600     # sem leitura nova há mais que isso: o clima some da tela
+
+[clock]              # relógio e despertador (alarmes e fuso se ajustam tocando no relógio)
+timezone = "America/Sao_Paulo"   # padrão; o fuso escolhido na tela vale por cima
+sound = ""           # wav/ogg do alarme; "" = bipe gerado
+volume = 0.8
+ring_s = 120         # o alarme para sozinho depois de N segundos
+snooze_min = 10      # soneca: botão grande na faixa do alarme; 0 = sem soneca
+
+[aircraft]           # ficha da aeronave (toque no tipo): base offline em SQLite
+db = "data/aircraft.db"   # gerar com: python tools/make_aircraft_db.py --sqlite --svg --size 512
+lookup = true        # alvo selecionado sem tipo (OpenSky): busca na internet
+
+[state]              # ajustes feitos na tela (alcance, chuva...), gravados pelo app
+path = ""            # "" = $STATE_DIRECTORY/state.json (systemd) ou ~/.local/state/radClock/
+
+[network]            # acesso à internet (APIs de tráfego, chuva, clima, tipos)
+strict_tls = true    # false: rede com proxy que intercepta o TLS e cuja CA não tem
+                     # Authority Key Identifier (erro "Missing Authority Key Identifier"
+                     # no Python 3.13+). A cadeia e o nome do servidor seguem verificados.
+
+# Camadas de mapa em GeoJSON (WGS84), desenhadas na ordem listada (a ordem
+# também é a prioridade dos rótulos). Gere as da sua estação com
+#   python tools/make_map.py --lat .. --lon .. --radius 300 --states --rivers --geojson-dir maps
+# e cole o maps/layers.toml aqui. Caminhos relativos ao WorkingDirectory
+# (/opt/radClock). Pontos (aeroporto, vor, vordme, ndb, dme, fix) ganham símbolo
+# e rótulo pela propriedade "kind" e "ident".
+# [[map.layers]]
+# path = "maps/coastline.geojson"
+# color = "#D8C878"
+#
+# [[map.layers]]
+# path = "maps/runways.geojson"
+# color = "#C8C8C8"
+# max_range_km = 100     # acima deste alcance a camada some (0 = sempre)
+#
+# [[map.layers]]
+# path = "maps/airports.geojson"
+# color = "#C8C8C8"
+# label_range_km = 100   # acima deste alcance, só os símbolos (0 = sempre)

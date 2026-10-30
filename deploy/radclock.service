@@ -1,0 +1,32 @@
+[Unit]
+Description=Radar ADS-B na tela (pygame-ce)
+After=readsb.service
+Wants=readsb.service
+# 24/7: nunca desistir de reiniciar (o padrão desiste após 5 falhas em 10 s)
+StartLimitIntervalSec=0
+
+[Service]
+# o app avisa "pronto" depois do primeiro quadro e "vivo" a cada volta do laço
+# (radClock/watchdog.py); sem aviso por WatchdogSec o systemd mata e reinicia
+Type=notify
+NotifyAccess=main
+WatchdogSec=30
+TimeoutStartSec=90
+User=mlabru
+SupplementaryGroups=video render input audio
+WorkingDirectory=/opt/radClock
+# Sem desktop: o SDL desenha direto no KMS/DRM. Exige Raspberry Pi OS Lite
+# (ou o desktop desligado), senão o compositor já é dono da tela.
+Environment=SDL_VIDEODRIVER=kmsdrm
+# som do despertador direto no ALSA (o Lite não tem PipeWire/PulseAudio)
+Environment=SDL_AUDIODRIVER=alsa
+# ajustes feitos na tela: /var/lib/radClock/state.json (STATE_DIRECTORY)
+StateDirectory=radClock
+ExecStart=/opt/radClock/.venv/bin/radClock --config /etc/radClock/config.toml
+Restart=always
+RestartSec=5
+# vazamento de memória não pode levar o Pi (1 GB) junto: mata só o app
+MemoryMax=400M
+
+[Install]
+WantedBy=multi-user.target
