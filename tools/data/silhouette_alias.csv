@@ -1,0 +1,201 @@
+# Borrow another type's drawing when pw-silhouettes has no picture of its own.
+# Only for airframes that genuinely look the same from above - a wrong-looking
+# silhouette is worse than none, and "no drawing" is a perfectly fine outcome
+# (the spec text still shows).  Rerun tools/make_aircraft_db.py after editing.
+icao,use_silhouette_of
+# --- 737 family ---
+B732,B738
+B733,B738
+B734,B738
+B735,B738
+B736,B738
+B737,B738
+B739,B738
+B37M,B38M
+B39M,B38M
+B3XM,B38M
+P8,B738
+# --- 747 (drawing comes from make_local_silhouettes.py, pw has none) ---
+B741,B744
+B742,B744
+B743,B744
+B74D,B744
+B74R,B744
+B74S,B744
+BLCF,B744
+# --- 757 / 777 / 787 ---
+B753,B752
+B773,B772
+B77L,B772
+B778,B772
+B779,B772
+B788,B789
+B78X,B789
+# --- Airbus ---
+KC30,A332
+# --- Embraer / A220 ---
+E170,E190
+E175,E190
+E75L,E190
+E75S,E190
+E195,E190
+SU95,E190
+BCS1,E190
+BCS3,E190
+# --- ATR ---
+AT43,AT75
+AT45,AT75
+AT46,AT75
+AT72,AT75
+AT76,AT75
+# --- rear-engine T-tails ---
+MD81,F100
+MD82,F100
+MD83,F100
+MD87,F100
+MD88,F100
+MD90,F100
+B712,F100
+B721,F100
+B722,F100
+# --- turboprop commuters ---
+L410,SW4
+D228,SW4
+JS31,SW4
+JS32,SW4
+JS41,SW4
+F27,SF34
+F50,SF34
+SB20,SF34
+D328,SF34
+J328,SF34
+# --- high-wing military/utility transports ---
+C212,AN26
+C295,AN26
+C27J,AN26
+AN30,AN26
+AN72,AN26
+IL76,AN12
+C130,AN12
+C17,A400
+C5M,A400
+# --- large business jets ---
+GLF4,GLEX
+GLF5,GLEX
+GLF6,GLEX
+GL5T,GLEX
+GL7T,GLEX
+CL30,GLEX
+CL35,GLEX
+CL60,GLEX
+FA7X,GLEX
+FA8X,GLEX
+FA50,GLEX
+F900,GLEX
+F2TH,GLEX
+# --- midsize / light jets ---
+H25B,H25A
+LJ35,H25A
+LJ45,H25A
+LJ60,H25A
+LJ75,H25A
+BE40,H25A
+PRM1,H25A
+FA20,H25A
+C25A,C560
+C25B,C560
+C25C,C560
+C500,C560
+C510,C560
+C525,C560
+C550,C560
+C56X,C560
+C650,C560
+C680,C560
+C68A,C560
+C700,C560
+C750,C560
+PC24,C560
+EA50,C560
+E50P,C560
+E55P,C560
+E545,C560
+E550,C560
+E35L,E145
+# --- turboprop singles / twins ---
+TBM7,PC12
+TBM8,PC12
+TBM9,PC12
+EVOT,PC12
+P46T,PC12
+AC95,AC90
+C425,C441
+B36T,BE36
+GA8,C208
+# --- piston singles ---
+C152,C172
+C162,C172
+C177,C172
+M20P,SR22
+M20T,SR22
+DA20,SR22
+DA40,SR22
+SR20,SR22
+DR40,SR22
+AA5,SR22
+PA46,SR22
+BE33,BE36
+BE35,BE36
+RV6,RV9
+RV7,RV9
+RV8,RV9
+RV10,RV9
+RV14,RV9
+PA18,BL8
+PA22,BL8
+P28B,P28A
+P28R,P28A
+P28T,P28A
+PA24,P28A
+P32R,P32T
+# --- piston twins ---
+C310,C402
+C337,C402
+C414,C402
+C421,C402
+PA30,PA44
+PA34,PA44
+PA23,PA44
+BE55,PA44
+BE58,PA44
+BE76,PA44
+BE95,PA44
+# --- helicopters ---
+R22,R44
+R66,R44
+AS32,AS50
+AS35,AS50
+EC20,EC45
+EC25,EC45
+EC30,EC45
+EC35,EC45
+EC55,EC45
+EC75,EC45
+B212,B412
+B429,B412
+B430,B412
+B47G,B06
+# --- fast jets / trainers ---
+F15,F16
+F18,F16
+F22,F16
+F35,F16
+T38,F16
+PC9,PC21
+# --- common in Brazil (drawings from make_local_silhouettes.py) ---
+E135,E145
+E13L,E145
+E140,E145
+B764,B763
+BE20,B350
+BE30,B350
