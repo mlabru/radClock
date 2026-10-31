@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 
 [Service]
 # o app avisa "pronto" depois do primeiro quadro e "vivo" a cada volta do laço
-# (radClock/watchdog.py); sem aviso por WatchdogSec o systemd mata e reinicia
+# (radClock/core/watchdog.py); sem aviso por WatchdogSec o systemd mata e reinicia
 Type=notify
 NotifyAccess=main
 WatchdogSec=30
