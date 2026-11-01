@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]   # license em SPDX
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "radClock"
+version = "0.1.0"
+description = "Radar de tráfego ADS-B para Raspberry Pi + tela 7\" (pygame-ce + readsb)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["pygame-ce>=2.5", "numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+radClock = "radClock.ui.app:main"
+
+[tool.setuptools.packages.find]
+include = ["radClock*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]          # acha o pacote radClock sem `pip install -e .`
